@@ -47,9 +47,9 @@ import scipy.sparse.linalg as spla
 from skfem import BilinearForm, condense
 from skfem.helpers import dot, grad
 
-from pdsopromat.core.spec import MaterialParams
-from pdsopromat.solver.assembly import MultiplierCache
-from pdsopromat.solver.space import FemSpace
+from lattice.core.spec import MaterialParams
+from lattice.solver.assembly import MultiplierCache
+from lattice.solver.space import FemSpace
 
 FloatArray = npt.NDArray[np.float64]
 

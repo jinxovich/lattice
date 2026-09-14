@@ -5,8 +5,8 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from pdsopromat.core import LoadProgram
-from pdsopromat.physics.loading import block_sample_times, boundary_temperature
+from lattice.core import LoadProgram
+from lattice.physics.loading import block_sample_times, boundary_temperature
 
 
 @pytest.fixture

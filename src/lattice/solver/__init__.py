@@ -9,8 +9,8 @@
 мы собирались обойти.
 """
 
-from pdsopromat.solver.assembly import StiffnessAssembler
-from pdsopromat.solver.elasticity import (
+from lattice.solver.assembly import StiffnessAssembler
+from lattice.solver.elasticity import (
     MechanicsSolution,
     assemble_body_force,
     assemble_stiffness,
@@ -20,10 +20,10 @@ from pdsopromat.solver.elasticity import (
     nodal_stress,
     solve_displacement,
 )
-from pdsopromat.solver.linear import SolveReport, WarmSolver
-from pdsopromat.solver.screening import ScreeningOperator
-from pdsopromat.solver.space import FemSpace
-from pdsopromat.solver.thermal import ThermalOperator, ThermalStepper
+from lattice.solver.linear import SolveReport, WarmSolver
+from lattice.solver.screening import ScreeningOperator
+from lattice.solver.space import FemSpace
+from lattice.solver.thermal import ThermalOperator, ThermalStepper
 
 __all__ = [
     "FemSpace",

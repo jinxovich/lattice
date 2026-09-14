@@ -49,7 +49,7 @@ uv run ruff check . && uv run mypy
 ## Структура
 
 ```
-src/pdsopromat/
+src/lattice/
   core/        CaseSpec, State, единицы, хеширование конфигов
   physics/     определяющие соотношения, закон повреждаемости   ← единственный источник истины
   solver/      сборка на scikit-fem, staggered-связывание       ← эталон

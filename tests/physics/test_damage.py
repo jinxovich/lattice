@@ -13,8 +13,8 @@ from hypothesis import given, settings
 from hypothesis import strategies as st
 from scipy.integrate import solve_ivp
 
-from pdsopromat.core import DamageParams
-from pdsopromat.physics.damage import (
+from lattice.core import DamageParams
+from lattice.physics.damage import (
     blocks_to_damage,
     damage_driving_integral,
     damage_rate,

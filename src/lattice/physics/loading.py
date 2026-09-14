@@ -11,7 +11,7 @@ from __future__ import annotations
 import numpy as np
 import numpy.typing as npt
 
-from pdsopromat.core.spec import LoadProgram
+from lattice.core.spec import LoadProgram
 
 FloatArray = npt.NDArray[np.float64]
 
@@ -47,7 +47,7 @@ def block_sample_times(program: LoadProgram, samples: int) -> tuple[FloatArray, 
     """Моменты внутри блока и веса трапеции для интегрирования Φ.
 
     Веса имеют размерность времени и в сумме дают период — таков контракт
-    :func:`~pdsopromat.physics.damage.damage_driving_integral`.
+    :func:`~lattice.physics.damage.damage_driving_integral`.
 
     Интегрируется величина, пропорциональная χ^r с r ≈ 5, поэтому подынтегральная
     функция много острее самой температуры, и число точек здесь — не формальность.

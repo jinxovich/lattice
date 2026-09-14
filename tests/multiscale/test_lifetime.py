@@ -11,7 +11,7 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from pdsopromat.core import (
+from lattice.core import (
     CaseSpec,
     DamageParams,
     Geometry,
@@ -21,14 +21,14 @@ from pdsopromat.core import (
     State,
     StructuredGrid,
 )
-from pdsopromat.multiscale import BlockEvaluator
-from pdsopromat.multiscale.lifetime import (
+from lattice.multiscale import BlockEvaluator
+from lattice.multiscale.lifetime import (
     LifetimeEngine,
     LifetimeSample,
     LifetimeSettings,
     _interpolate_crossing,
 )
-from pdsopromat.solver import FemSpace
+from lattice.solver import FemSpace
 
 RESOLUTION = 25
 

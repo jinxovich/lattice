@@ -37,7 +37,7 @@ import scipy.sparse as sp
 import scipy.sparse.linalg as spla
 from skfem import condense
 
-from pdsopromat.solver.space import FemSpace
+from lattice.solver.space import FemSpace
 
 FloatArray = npt.NDArray[np.float64]
 
@@ -50,7 +50,7 @@ class SolveReport:
     """Что именно произошло при решении — поле сертификата, а не отладочный вывод.
 
     ``residual`` считается по несжатой системе тем же определением, что и
-    :func:`~pdsopromat.solver.elasticity.equilibrium_residual`, поэтому эталонный
+    :func:`~lattice.solver.elasticity.equilibrium_residual`, поэтому эталонный
     и суррогатный пути сравнимы напрямую.
     """
 

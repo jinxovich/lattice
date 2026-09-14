@@ -10,8 +10,8 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from pdsopromat.core import Geometry
-from pdsopromat.core.grid import StructuredGrid, material_mask, stiffness_multiplier
+from lattice.core import Geometry
+from lattice.core.grid import StructuredGrid, material_mask, stiffness_multiplier
 
 
 @pytest.fixture

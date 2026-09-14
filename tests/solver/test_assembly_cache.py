@@ -11,12 +11,12 @@ import numpy as np
 import pytest
 import scipy.sparse as sp
 
-from pdsopromat.core import MaterialParams
-from pdsopromat.core.grid import StructuredGrid
-from pdsopromat.physics.elasticity import plane_stress_moduli
-from pdsopromat.solver import FemSpace, assemble_stiffness
-from pdsopromat.solver.assembly import StiffnessAssembler
-from pdsopromat.solver.elasticity import stiffness_form
+from lattice.core import MaterialParams
+from lattice.core.grid import StructuredGrid
+from lattice.physics.elasticity import plane_stress_moduli
+from lattice.solver import FemSpace, assemble_stiffness
+from lattice.solver.assembly import StiffnessAssembler
+from lattice.solver.elasticity import stiffness_form
 
 
 @pytest.fixture

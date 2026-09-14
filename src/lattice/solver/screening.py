@@ -35,8 +35,8 @@ import scipy.sparse.linalg as spla
 from skfem import BilinearForm
 from skfem.helpers import dot, grad
 
-from pdsopromat.core.grid import StructuredGrid
-from pdsopromat.solver.space import FemSpace
+from lattice.core.grid import StructuredGrid
+from lattice.solver.space import FemSpace
 
 FloatArray = npt.NDArray[np.float64]
 

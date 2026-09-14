@@ -27,17 +27,17 @@ from dataclasses import dataclass
 import numpy as np
 import numpy.typing as npt
 
-from pdsopromat.core.grid import material_mask
-from pdsopromat.core.spec import CaseSpec
-from pdsopromat.physics.damage import damage_driving_integral, hayhurst_equivalent_stress
-from pdsopromat.physics.elasticity import degradation_multiplier
-from pdsopromat.physics.loading import block_sample_times, boundary_temperature
-from pdsopromat.solver.assembly import StiffnessAssembler
-from pdsopromat.solver.elasticity import assemble_thermal_load, assemble_traction, nodal_stress
-from pdsopromat.solver.linear import WarmSolver
-from pdsopromat.solver.screening import ScreeningOperator
-from pdsopromat.solver.space import FemSpace
-from pdsopromat.solver.thermal import ThermalOperator
+from lattice.core.grid import material_mask
+from lattice.core.spec import CaseSpec
+from lattice.physics.damage import damage_driving_integral, hayhurst_equivalent_stress
+from lattice.physics.elasticity import degradation_multiplier
+from lattice.physics.loading import block_sample_times, boundary_temperature
+from lattice.solver.assembly import StiffnessAssembler
+from lattice.solver.elasticity import assemble_thermal_load, assemble_traction, nodal_stress
+from lattice.solver.linear import WarmSolver
+from lattice.solver.screening import ScreeningOperator
+from lattice.solver.space import FemSpace
+from lattice.solver.thermal import ThermalOperator
 
 FloatArray = npt.NDArray[np.float64]
 TOLERANCE = 1.0e-9

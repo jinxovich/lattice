@@ -9,10 +9,10 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from pdsopromat.core import MaterialParams
-from pdsopromat.core.grid import StructuredGrid
-from pdsopromat.solver import FemSpace
-from pdsopromat.solver.thermal import BACKWARD_EULER, CRANK_NICOLSON, ThermalOperator
+from lattice.core import MaterialParams
+from lattice.core.grid import StructuredGrid
+from lattice.solver import FemSpace
+from lattice.solver.thermal import BACKWARD_EULER, CRANK_NICOLSON, ThermalOperator
 
 TOL = 1e-9
 NX, NY = 33, 5

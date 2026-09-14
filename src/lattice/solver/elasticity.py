@@ -1,7 +1,7 @@
 """Сборка и решение квазистатической задачи упругости с деградацией и теплом.
 
 Эталонный путь контракта C3. Определяющие соотношения сюда не переписываются:
-напряжение из деформации считает :mod:`pdsopromat.physics.elasticity`, тот же
+напряжение из деформации считает :mod:`lattice.physics.elasticity`, тот же
 код, которым пользуется суррогатный путь. Здесь только слабая форма, сборка,
 граничные условия и решение.
 
@@ -22,9 +22,9 @@ import scipy.sparse as sp
 from skfem import BilinearForm, LinearForm, condense, solve
 from skfem.helpers import ddot, dot, sym_grad, trace
 
-from pdsopromat.core.spec import CaseSpec, MaterialParams
-from pdsopromat.physics.elasticity import plane_stress_moduli, stress_from_strain
-from pdsopromat.solver.space import FemSpace
+from lattice.core.spec import CaseSpec, MaterialParams
+from lattice.physics.elasticity import plane_stress_moduli, stress_from_strain
+from lattice.solver.space import FemSpace
 
 FloatArray = npt.NDArray[np.float64]
 

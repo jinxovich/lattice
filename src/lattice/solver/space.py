@@ -19,7 +19,7 @@ from dataclasses import dataclass
 import numpy as np
 from skfem import Basis, ElementQuad1, ElementVector, FacetBasis, MeshQuad
 
-from pdsopromat.core.grid import StructuredGrid
+from lattice.core.grid import StructuredGrid
 
 _ORDERING_TOLERANCE = 1e-12
 

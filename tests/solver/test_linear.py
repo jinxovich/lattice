@@ -11,16 +11,16 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from pdsopromat.core import MaterialParams
-from pdsopromat.core.grid import StructuredGrid
-from pdsopromat.solver import (
+from lattice.core import MaterialParams
+from lattice.core.grid import StructuredGrid
+from lattice.solver import (
     FemSpace,
     StiffnessAssembler,
     assemble_traction,
     equilibrium_residual,
     solve_displacement,
 )
-from pdsopromat.solver.linear import WarmSolver
+from lattice.solver.linear import WarmSolver
 
 TOL = 1e-9
 RESOLUTION = 33

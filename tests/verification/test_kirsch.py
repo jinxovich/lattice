@@ -25,9 +25,9 @@ import numpy as np
 import pytest
 from scipy.interpolate import RegularGridInterpolator
 
-from pdsopromat.core import CaseSpec, Geometry, MaterialParams
-from pdsopromat.core.grid import StructuredGrid, material_mask, stiffness_multiplier
-from pdsopromat.solver import (
+from lattice.core import CaseSpec, Geometry, MaterialParams
+from lattice.core.grid import StructuredGrid, material_mask, stiffness_multiplier
+from lattice.solver import (
     FemSpace,
     assemble_stiffness,
     assemble_traction,

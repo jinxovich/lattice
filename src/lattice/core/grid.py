@@ -18,7 +18,7 @@ from dataclasses import dataclass
 import numpy as np
 import numpy.typing as npt
 
-from pdsopromat.core.spec import Geometry
+from lattice.core.spec import Geometry
 
 FloatArray = npt.NDArray[np.float64]
 

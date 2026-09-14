@@ -1,7 +1,7 @@
 """Базовые типы и инварианты, общие для всех слоёв."""
 
-from pdsopromat.core.grid import StructuredGrid, material_mask, stiffness_multiplier
-from pdsopromat.core.spec import (
+from lattice.core.grid import StructuredGrid, material_mask, stiffness_multiplier
+from lattice.core.spec import (
     SCHEMA_VERSION,
     CaseSpec,
     DamageParams,
@@ -10,7 +10,7 @@ from pdsopromat.core.spec import (
     MaterialParams,
     MeshSpec,
 )
-from pdsopromat.core.state import State
+from lattice.core.state import State
 
 __all__ = [
     "SCHEMA_VERSION",

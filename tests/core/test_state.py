@@ -5,9 +5,9 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from pdsopromat.core import CaseSpec
-from pdsopromat.core.grid import StructuredGrid
-from pdsopromat.core.state import State
+from lattice.core import CaseSpec
+from lattice.core.grid import StructuredGrid
+from lattice.core.state import State
 
 
 @pytest.fixture

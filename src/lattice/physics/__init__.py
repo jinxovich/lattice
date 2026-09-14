@@ -5,7 +5,7 @@
 по картинке, зато оно прекрасно маскируется под «сеть недоучилась».
 """
 
-from pdsopromat.physics.damage import (
+from lattice.physics.damage import (
     blocks_to_damage,
     damage_driving_integral,
     damage_rate,
@@ -14,7 +14,7 @@ from pdsopromat.physics.damage import (
     max_principal_plane_stress,
     von_mises_plane_stress,
 )
-from pdsopromat.physics.elasticity import (
+from lattice.physics.elasticity import (
     degradation_multiplier,
     plane_stress_moduli,
     stress_from_strain,

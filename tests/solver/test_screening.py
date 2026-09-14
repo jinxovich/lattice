@@ -11,9 +11,9 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from pdsopromat.core.grid import StructuredGrid
-from pdsopromat.solver import FemSpace
-from pdsopromat.solver.screening import ScreeningOperator
+from lattice.core.grid import StructuredGrid
+from lattice.solver import FemSpace
+from lattice.solver.screening import ScreeningOperator
 
 
 def build(n: int = 41, length: float = 0.05, size: float = 1.0) -> ScreeningOperator:

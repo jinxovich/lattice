@@ -10,8 +10,8 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from pdsopromat.core import DamageParams, MaterialParams
-from pdsopromat.physics.elasticity import (
+from lattice.core import DamageParams, MaterialParams
+from lattice.physics.elasticity import (
     degradation_multiplier,
     plane_stress_moduli,
     stress_from_strain,

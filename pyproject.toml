@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "pdsopromat"
+name = "lattice"
 version = "0.1.0"
 description = "Суррогатное моделирование связанной термо-механо-деградационной задачи"
 readme = "README.md"
@@ -56,7 +56,7 @@ dev = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/pdsopromat"]
+packages = ["src/lattice"]
 
 # ---------------------------------------------------------------------------
 # Ruff
@@ -100,7 +100,7 @@ ignore = [
 "tests/**" = ["PLR2004", "S101"]
 
 [tool.ruff.lint.isort]
-known-first-party = ["pdsopromat"]
+known-first-party = ["lattice"]
 
 # ---------------------------------------------------------------------------
 # Mypy
@@ -122,7 +122,7 @@ ignore_missing_imports = true
 # ровно два правила; всё остальное — включая обязательные аннотации — остаётся
 # под strict. Остальной проект не затронут.
 [[tool.mypy.overrides]]
-module = ["pdsopromat.solver.*", "tests.verification.*"]
+module = ["lattice.solver.*", "tests.verification.*"]
 disallow_untyped_decorators = false
 warn_return_any = false
 
@@ -142,13 +142,13 @@ markers = [
 # ---------------------------------------------------------------------------
 [tool.coverage.run]
 branch = true
-source = ["src/pdsopromat"]
+source = ["src/lattice"]
 
 [tool.coverage.report]
 # Порог 80% меряется по физике/суррогату/движку/API, не по коду построения графиков.
 omit = [
-    "src/pdsopromat/bench/report.py",
-    "src/pdsopromat/*/cli.py",
+    "src/lattice/bench/report.py",
+    "src/lattice/*/cli.py",
 ]
 exclude_lines = [
     "pragma: no cover",

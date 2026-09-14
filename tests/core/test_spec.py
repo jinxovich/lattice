@@ -5,7 +5,7 @@ from __future__ import annotations
 import pytest
 from pydantic import ValidationError
 
-from pdsopromat.core import (
+from lattice.core import (
     CaseSpec,
     DamageParams,
     Geometry,

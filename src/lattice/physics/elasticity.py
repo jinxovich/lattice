@@ -16,8 +16,8 @@ from __future__ import annotations
 import numpy as np
 import numpy.typing as npt
 
-from pdsopromat.core.grid import stiffness_multiplier
-from pdsopromat.core.spec import DamageParams, MaterialParams
+from lattice.core.grid import stiffness_multiplier
+from lattice.core.spec import DamageParams, MaterialParams
 
 FloatArray = npt.NDArray[np.float64]
 FloatLike = float | FloatArray

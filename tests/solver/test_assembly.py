@@ -5,9 +5,9 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from pdsopromat.core import CaseSpec, MaterialParams
-from pdsopromat.core.grid import StructuredGrid
-from pdsopromat.solver import (
+from lattice.core import CaseSpec, MaterialParams
+from lattice.core.grid import StructuredGrid
+from lattice.solver import (
     FemSpace,
     assemble_stiffness,
     assemble_thermal_load,

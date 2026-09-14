@@ -20,7 +20,7 @@
 вынесен в :class:`MultiplierCache`, а конкретные операторы — тонкие обёртки.
 
 Множитель берётся постоянным на элементе, а не интерполированным по узлам, как
-в эталонной сборке :func:`~pdsopromat.solver.elasticity.assemble_stiffness`.
+в эталонной сборке :func:`~lattice.solver.elasticity.assemble_stiffness`.
 Это другая дискретизация; набор искусственных решений подтверждает, что второй
 порядок сходимости она сохраняет.
 """
@@ -34,10 +34,10 @@ import numpy as np
 import numpy.typing as npt
 import scipy.sparse as sp
 
-from pdsopromat.core.spec import MaterialParams
-from pdsopromat.physics.elasticity import plane_stress_moduli
-from pdsopromat.solver.elasticity import stiffness_form
-from pdsopromat.solver.space import FemSpace
+from lattice.core.spec import MaterialParams
+from lattice.physics.elasticity import plane_stress_moduli
+from lattice.solver.elasticity import stiffness_form
+from lattice.solver.space import FemSpace
 
 FloatArray = npt.NDArray[np.float64]
 IntArray = npt.NDArray[np.int64]

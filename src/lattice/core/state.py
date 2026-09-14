@@ -18,8 +18,8 @@ from dataclasses import dataclass, replace
 import numpy as np
 import numpy.typing as npt
 
-from pdsopromat.core.grid import StructuredGrid
-from pdsopromat.core.spec import CaseSpec
+from lattice.core.grid import StructuredGrid
+from lattice.core.spec import CaseSpec
 
 FloatArray = npt.NDArray[np.float64]
 

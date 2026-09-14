@@ -23,17 +23,17 @@ import pytest
 import sympy as sp
 from skfem import Basis, ElementQuad1, ElementVector, Functional
 
-from pdsopromat.core import MaterialParams
-from pdsopromat.core.grid import StructuredGrid
-from pdsopromat.physics.elasticity import plane_stress_moduli
-from pdsopromat.solver import (
+from lattice.core import MaterialParams
+from lattice.core.grid import StructuredGrid
+from lattice.physics.elasticity import plane_stress_moduli
+from lattice.solver import (
     FemSpace,
     assemble_body_force,
     assemble_stiffness,
     assemble_thermal_load,
     solve_displacement,
 )
-from pdsopromat.solver.assembly import StiffnessAssembler
+from lattice.solver.assembly import StiffnessAssembler
 
 Scalar2D = Callable[[np.ndarray, np.ndarray], np.ndarray]
 RESOLUTIONS = (9, 17, 33, 65)

@@ -975,6 +975,74 @@ wheels = [
 ]
 
 [[package]]
+name = "lattice"
+version = "0.1.0"
+source = { editable = "." }
+dependencies = [
+    { name = "numpy" },
+    { name = "pyamg" },
+    { name = "pydantic" },
+    { name = "pyyaml" },
+    { name = "scikit-fem" },
+    { name = "scipy" },
+    { name = "typer" },
+]
+
+[package.optional-dependencies]
+api = [
+    { name = "fastapi" },
+    { name = "uvicorn", extra = ["standard"] },
+]
+data = [
+    { name = "polars" },
+    { name = "pyarrow" },
+    { name = "zarr" },
+]
+ml = [
+    { name = "neuraloperator" },
+    { name = "torch" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "hypothesis" },
+    { name = "mypy" },
+    { name = "pytest" },
+    { name = "pytest-cov" },
+    { name = "ruff" },
+    { name = "sympy" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "fastapi", marker = "extra == 'api'", specifier = ">=0.115" },
+    { name = "neuraloperator", marker = "extra == 'ml'", specifier = ">=1.0" },
+    { name = "numpy", specifier = ">=2.0" },
+    { name = "polars", marker = "extra == 'data'", specifier = ">=1.0" },
+    { name = "pyamg", specifier = ">=5.3" },
+    { name = "pyarrow", marker = "extra == 'data'", specifier = ">=18.0" },
+    { name = "pydantic", specifier = ">=2.9" },
+    { name = "pyyaml", specifier = ">=6.0" },
+    { name = "scikit-fem", specifier = ">=10.0" },
+    { name = "scipy", specifier = ">=1.14" },
+    { name = "torch", marker = "extra == 'ml'", specifier = ">=2.5" },
+    { name = "typer", specifier = ">=0.15" },
+    { name = "uvicorn", extras = ["standard"], marker = "extra == 'api'", specifier = ">=0.32" },
+    { name = "zarr", marker = "extra == 'data'", specifier = ">=3.0" },
+]
+provides-extras = ["data", "ml", "api"]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "hypothesis", specifier = ">=6.120" },
+    { name = "mypy", specifier = ">=1.13" },
+    { name = "pytest", specifier = ">=8.3" },
+    { name = "pytest-cov", specifier = ">=6.0" },
+    { name = "ruff", specifier = ">=0.8" },
+    { name = "sympy", specifier = ">=1.13" },
+]
+
+[[package]]
 name = "librt"
 version = "0.15.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1680,74 +1748,6 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/5a/82/42f767fc1c1143d6fd36efb827202a2d997a375e160a71eb2888a925aac1/pathspec-1.1.1.tar.gz", hash = "sha256:17db5ecd524104a120e173814c90367a96a98d07c45b2e10c2f3919fff91bf5a", size = 135180, upload-time = "2026-04-27T01:46:08.907Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/f1/d9/7fb5aa316bc299258e68c73ba3bddbc499654a07f151cba08f6153988714/pathspec-1.1.1-py3-none-any.whl", hash = "sha256:a00ce642f577bf7f473932318056212bc4f8bfdf53128c78bbd5af0b9b20b189", size = 57328, upload-time = "2026-04-27T01:46:07.06Z" },
-]
-
-[[package]]
-name = "pdsopromat"
-version = "0.1.0"
-source = { editable = "." }
-dependencies = [
-    { name = "numpy" },
-    { name = "pyamg" },
-    { name = "pydantic" },
-    { name = "pyyaml" },
-    { name = "scikit-fem" },
-    { name = "scipy" },
-    { name = "typer" },
-]
-
-[package.optional-dependencies]
-api = [
-    { name = "fastapi" },
-    { name = "uvicorn", extra = ["standard"] },
-]
-data = [
-    { name = "polars" },
-    { name = "pyarrow" },
-    { name = "zarr" },
-]
-ml = [
-    { name = "neuraloperator" },
-    { name = "torch" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "hypothesis" },
-    { name = "mypy" },
-    { name = "pytest" },
-    { name = "pytest-cov" },
-    { name = "ruff" },
-    { name = "sympy" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "fastapi", marker = "extra == 'api'", specifier = ">=0.115" },
-    { name = "neuraloperator", marker = "extra == 'ml'", specifier = ">=1.0" },
-    { name = "numpy", specifier = ">=2.0" },
-    { name = "polars", marker = "extra == 'data'", specifier = ">=1.0" },
-    { name = "pyamg", specifier = ">=5.3" },
-    { name = "pyarrow", marker = "extra == 'data'", specifier = ">=18.0" },
-    { name = "pydantic", specifier = ">=2.9" },
-    { name = "pyyaml", specifier = ">=6.0" },
-    { name = "scikit-fem", specifier = ">=10.0" },
-    { name = "scipy", specifier = ">=1.14" },
-    { name = "torch", marker = "extra == 'ml'", specifier = ">=2.5" },
-    { name = "typer", specifier = ">=0.15" },
-    { name = "uvicorn", extras = ["standard"], marker = "extra == 'api'", specifier = ">=0.32" },
-    { name = "zarr", marker = "extra == 'data'", specifier = ">=3.0" },
-]
-provides-extras = ["data", "ml", "api"]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "hypothesis", specifier = ">=6.120" },
-    { name = "mypy", specifier = ">=1.13" },
-    { name = "pytest", specifier = ">=8.3" },
-    { name = "pytest-cov", specifier = ">=6.0" },
-    { name = "ruff", specifier = ">=0.8" },
-    { name = "sympy", specifier = ">=1.13" },
 ]
 
 [[package]]

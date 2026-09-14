@@ -10,8 +10,8 @@
 подсистема.
 """
 
-from pdsopromat.multiscale.block import BlockEvaluator, BlockResult
-from pdsopromat.multiscale.lifetime import (
+from lattice.multiscale.block import BlockEvaluator, BlockResult
+from lattice.multiscale.lifetime import (
     LifetimeEngine,
     LifetimeResult,
     LifetimeSample,

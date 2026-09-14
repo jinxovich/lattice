@@ -12,7 +12,7 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from pdsopromat.core import (
+from lattice.core import (
     CaseSpec,
     DamageParams,
     Geometry,
@@ -21,8 +21,8 @@ from pdsopromat.core import (
     MeshSpec,
     StructuredGrid,
 )
-from pdsopromat.multiscale import BlockEvaluator
-from pdsopromat.solver import FemSpace
+from lattice.multiscale import BlockEvaluator
+from lattice.solver import FemSpace
 
 RESOLUTION = 33
 

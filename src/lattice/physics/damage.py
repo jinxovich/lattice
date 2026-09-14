@@ -15,7 +15,7 @@ from __future__ import annotations
 import numpy as np
 import numpy.typing as npt
 
-from pdsopromat.core.spec import DamageParams
+from lattice.core.spec import DamageParams
 
 FloatArray = npt.NDArray[np.float64]
 FloatLike = float | FloatArray

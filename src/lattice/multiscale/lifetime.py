@@ -57,9 +57,9 @@ from dataclasses import dataclass, field
 import numpy as np
 import numpy.typing as npt
 
-from pdsopromat.core.state import State
-from pdsopromat.multiscale.block import BlockEvaluator, BlockResult
-from pdsopromat.physics.damage import kr_exact_jump
+from lattice.core.state import State
+from lattice.multiscale.block import BlockEvaluator, BlockResult
+from lattice.physics.damage import kr_exact_jump
 
 FloatArray = npt.NDArray[np.float64]
 
