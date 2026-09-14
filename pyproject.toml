@@ -114,10 +114,11 @@ ignore_missing_imports = true
 
 # scikit-fem не поставляет типовую информацию, поэтому декораторы форм
 # (@BilinearForm, @LinearForm, @Functional) стирают типы обёрнутых функций.
-# Послабление точечное — только там, где слабые формы действительно объявляются;
-# остальной проект остаётся под strict.
+# Послабление ограничено слоем, который вообще имеет право звать skfem, и снимает
+# ровно два правила; всё остальное — включая обязательные аннотации — остаётся
+# под strict. Остальной проект не затронут.
 [[tool.mypy.overrides]]
-module = ["pdsopromat.solver.elasticity", "tests.verification.*"]
+module = ["pdsopromat.solver.*", "tests.verification.*"]
 disallow_untyped_decorators = false
 warn_return_any = false
 
