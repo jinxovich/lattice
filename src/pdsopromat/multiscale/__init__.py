@@ -11,5 +11,18 @@
 """
 
 from pdsopromat.multiscale.block import BlockEvaluator, BlockResult
+from pdsopromat.multiscale.lifetime import (
+    LifetimeEngine,
+    LifetimeResult,
+    LifetimeSample,
+    LifetimeSettings,
+)
 
-__all__ = ["BlockEvaluator", "BlockResult"]
+__all__ = [
+    "BlockEvaluator",
+    "BlockResult",
+    "LifetimeEngine",
+    "LifetimeResult",
+    "LifetimeSample",
+    "LifetimeSettings",
+]
