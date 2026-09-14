@@ -20,6 +20,7 @@ from pdsopromat.solver.elasticity import (
     nodal_stress,
     solve_displacement,
 )
+from pdsopromat.solver.linear import SolveReport, WarmSolver
 from pdsopromat.solver.screening import ScreeningOperator
 from pdsopromat.solver.space import FemSpace
 
@@ -27,7 +28,9 @@ __all__ = [
     "FemSpace",
     "MechanicsSolution",
     "ScreeningOperator",
+    "SolveReport",
     "StiffnessAssembler",
+    "WarmSolver",
     "assemble_body_force",
     "assemble_stiffness",
     "assemble_thermal_load",
