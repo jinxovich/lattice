@@ -9,6 +9,7 @@
 мы собирались обойти.
 """
 
+from pdsopromat.solver.assembly import StiffnessAssembler
 from pdsopromat.solver.elasticity import (
     MechanicsSolution,
     assemble_body_force,
@@ -26,6 +27,7 @@ __all__ = [
     "FemSpace",
     "MechanicsSolution",
     "ScreeningOperator",
+    "StiffnessAssembler",
     "assemble_body_force",
     "assemble_stiffness",
     "assemble_thermal_load",

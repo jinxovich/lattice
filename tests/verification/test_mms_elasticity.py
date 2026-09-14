@@ -33,6 +33,7 @@ from pdsopromat.solver import (
     assemble_thermal_load,
     solve_displacement,
 )
+from pdsopromat.solver.assembly import StiffnessAssembler
 
 Scalar2D = Callable[[np.ndarray, np.ndarray], np.ndarray]
 RESOLUTIONS = (9, 17, 33, 65)
@@ -101,8 +102,15 @@ def manufacture(
     )
 
 
-def solve_manufactured(case: ManufacturedCase, n: int, material: MaterialParams) -> float:
-    """Решает задачу на решётке n×n и возвращает относительную ошибку L2."""
+def solve_manufactured(
+    case: ManufacturedCase, n: int, material: MaterialParams, *, cached: bool = False
+) -> float:
+    """Решает задачу на решётке n×n и возвращает относительную ошибку L2.
+
+    ``cached=True`` переключает сборку на :class:`StiffnessAssembler`, где множитель
+    жёсткости постоянен на элементе, а не интерполирован по узлам. Это другая
+    дискретизация, и вопрос, который здесь проверяется, — сохраняет ли она порядок.
+    """
     space = FemSpace.from_grid(StructuredGrid(nx=n, ny=n, width=1.0, height=1.0))
     node_x, node_y = space.grid.coordinates()
 
@@ -117,7 +125,11 @@ def solve_manufactured(case: ManufacturedCase, n: int, material: MaterialParams)
         ]
     )
 
-    stiffness = assemble_stiffness(space, material, multiplier)
+    stiffness = (
+        StiffnessAssembler.build(space, material).assemble(multiplier)
+        if cached
+        else assemble_stiffness(space, material, multiplier)
+    )
     load = assemble_body_force(space, body_force) + assemble_thermal_load(
         space, material, multiplier, temperature
     )
@@ -195,6 +207,24 @@ class TestManufacturedSolutions:
         )
 
         errors = [solve_manufactured(case, n, material) for n in RESOLUTIONS]
+
+        assert convergence_order(errors) == pytest.approx(2.0, abs=0.2)
+
+    def test_cached_assembly_keeps_second_order(self, material: MaterialParams) -> None:
+        # Кешированная сборка берёт множитель жёсткости постоянным на элементе
+        # вместо интерполяции по узлам. Дискретизация другая, и без этой проверки
+        # ускорение в 40–74 раза могло бы оказаться куплено потерей порядка —
+        # ровно тем, что на глаз не видно, а в ресурсе стоит множителя r.
+        x, y = sp.symbols("x y", real=True)
+        case = manufacture(
+            ux_expr=sp.sin(sp.pi * x) * sp.sin(sp.pi * y),
+            uy_expr=sp.sin(2 * sp.pi * x) * sp.sin(sp.pi * y),
+            multiplier_expr=sp.Rational(1, 2) + sp.Rational(1, 4) * sp.cos(sp.pi * x * y),
+            delta_t_expr=sp.Integer(0),
+            material=material,
+        )
+
+        errors = [solve_manufactured(case, n, material, cached=True) for n in RESOLUTIONS]
 
         assert convergence_order(errors) == pytest.approx(2.0, abs=0.2)
 

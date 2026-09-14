@@ -30,7 +30,7 @@ FloatArray = npt.NDArray[np.float64]
 
 
 @BilinearForm
-def _stiffness_form(u: Any, v: Any, w: Any) -> Any:
+def stiffness_form(u: Any, v: Any, w: Any) -> Any:
     """m·[2μ ε(u):ε(v) + λ tr(ε(u))tr(ε(v))] — плоское напряжённое состояние."""
     strain_u = sym_grad(u)
     strain_v = sym_grad(v)
@@ -81,7 +81,7 @@ def assemble_stiffness(
 ) -> sp.csr_matrix:
     """K(m) для узлового поля множителя жёсткости ``multiplier`` формы ``(nx, ny)``."""
     lam, mu = plane_stress_moduli(material)
-    matrix: sp.csr_matrix = _stiffness_form.assemble(
+    matrix: sp.csr_matrix = stiffness_form.assemble(
         space.vector,
         multiplier=space.scalar.interpolate(space.grid.as_dofs(multiplier)),
         lam=lam,
