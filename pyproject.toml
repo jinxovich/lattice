@@ -1,0 +1,134 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pdsopromat"
+version = "0.1.0"
+description = "Суррогатное моделирование связанной термо-механо-деградационной задачи"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+
+dependencies = [
+    "numpy>=2.0",
+    "scipy>=1.14",
+    "scikit-fem>=10.0",
+    "pydantic>=2.9",
+    "pyyaml>=6.0",
+    "typer>=0.15",
+]
+
+[project.optional-dependencies]
+# Хранилище датасетов. Отделено, чтобы верификация солвера ставилась без Zarr/Arrow.
+data = [
+    "zarr>=3.0",
+    "pyarrow>=18.0",
+    "polars>=1.0",
+]
+# ML-контур. На Windows-машине разработки не нужен: обучение идёт на Ubuntu.
+ml = [
+    "torch>=2.5",
+    "neuraloperator>=1.0",
+]
+api = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.32",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "pytest-cov>=6.0",
+    "hypothesis>=6.120",
+    "ruff>=0.8",
+    "mypy>=1.13",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pdsopromat"]
+
+# ---------------------------------------------------------------------------
+# Ruff
+# ---------------------------------------------------------------------------
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E", "W",      # pycodestyle
+    "F",           # pyflakes
+    "I",           # isort
+    "N",           # pep8-naming
+    "UP",          # pyupgrade
+    "B",           # bugbear
+    "SIM",         # simplify
+    "RUF",         # ruff-specific
+    "NPY",         # numpy-specific
+    "PL",          # pylint
+    "TID",         # tidy-imports
+]
+ignore = [
+    # Однобуквенные имена в численном коде — это E, nu, K, f из формул, а не небрежность.
+    "E741",
+    "PLR0913",  # много аргументов: у физических функций это нормально
+    "PLR2004",  # магические числа в тестах-сравнениях
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["PLR2004", "S101"]
+
+[tool.ruff.lint.flake8-tidy-imports.banned-api]
+# Контракт: слой API не имеет права импортировать физику или солвер.
+# Полная проверка — в tests/test_import_boundaries.py, здесь только подсказка в редакторе.
+"pdsopromat.solver".msg = "api/ не должен импортировать solver/ — см. контракт C-импорт в плане"
+
+[tool.ruff.lint.isort]
+known-first-party = ["pdsopromat"]
+
+# ---------------------------------------------------------------------------
+# Mypy
+# ---------------------------------------------------------------------------
+[tool.mypy]
+python_version = "3.11"
+files = ["src", "tests"]
+strict = true
+warn_unreachable = true
+plugins = ["pydantic.mypy"]
+
+[[tool.mypy.overrides]]
+module = ["skfem.*", "scipy.*", "zarr.*", "neuraloperator.*"]
+ignore_missing_imports = true
+
+# ---------------------------------------------------------------------------
+# Pytest
+# ---------------------------------------------------------------------------
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers --strict-config"
+markers = [
+    "slow: тесты дольше ~5 с (сеточная сходимость, прогоны до отказа)",
+    "verification: набор верификации — MMS, Кирш, аналитика KR",
+]
+
+# ---------------------------------------------------------------------------
+# Coverage
+# ---------------------------------------------------------------------------
+[tool.coverage.run]
+branch = true
+source = ["src/pdsopromat"]
+
+[tool.coverage.report]
+# Порог 80% меряется по физике/суррогату/движку/API, не по коду построения графиков.
+omit = [
+    "src/pdsopromat/bench/report.py",
+    "src/pdsopromat/*/cli.py",
+]
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+    "@overload",
+]

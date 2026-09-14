@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Инструменты
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+coverage.xml
+
+# Данные и артефакты. Версионируются контент-адресно через манифесты,
+# а не через git — см. раздел «Данные» в плане. git-lfs не используется.
+data/
+runs/
+*.zarr/
+*.parquet
+*.npy
+*.pt
+
+# Фронт
+web/node_modules/
+web/dist/
+web/.vite/
+
+# Редакторы и ОС
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

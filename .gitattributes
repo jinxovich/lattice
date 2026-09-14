@@ -1,0 +1,10 @@
+# Единые переводы строк: разработка на Windows, расчёт и деплой на Ubuntu.
+# Без этого диффы шумят на каждом переключении платформы, а shell-скрипты
+# в контейнере ломаются на CRLF.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.npy binary
+*.pt   binary
+*.parquet binary
