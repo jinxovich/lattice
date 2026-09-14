@@ -14,13 +14,23 @@ from pdsopromat.physics.damage import (
     max_principal_plane_stress,
     von_mises_plane_stress,
 )
+from pdsopromat.physics.elasticity import (
+    degradation_multiplier,
+    plane_stress_moduli,
+    stress_from_strain,
+    thermal_strain,
+)
 
 __all__ = [
     "blocks_to_damage",
     "damage_driving_integral",
     "damage_rate",
+    "degradation_multiplier",
     "hayhurst_equivalent_stress",
     "kr_exact_jump",
     "max_principal_plane_stress",
+    "plane_stress_moduli",
+    "stress_from_strain",
+    "thermal_strain",
     "von_mises_plane_stress",
 ]
