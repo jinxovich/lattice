@@ -23,6 +23,7 @@ from pdsopromat.solver.elasticity import (
 from pdsopromat.solver.linear import SolveReport, WarmSolver
 from pdsopromat.solver.screening import ScreeningOperator
 from pdsopromat.solver.space import FemSpace
+from pdsopromat.solver.thermal import ThermalOperator, ThermalStepper
 
 __all__ = [
     "FemSpace",
@@ -30,6 +31,8 @@ __all__ = [
     "ScreeningOperator",
     "SolveReport",
     "StiffnessAssembler",
+    "ThermalOperator",
+    "ThermalStepper",
     "WarmSolver",
     "assemble_body_force",
     "assemble_stiffness",
