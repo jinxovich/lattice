@@ -171,6 +171,46 @@ class TestAnalyticSlab:
         assert slope == pytest.approx(-(np.pi**2), rel=0.02)
 
 
+class TestMaximumPrinciple:
+    """Диффузия не может вывести температуру за пределы граничных и начальных значений.
+
+    Нарушение здесь — не погрешность, а неверный ответ: нефизичный выброс входит
+    в закон повреждаемости в степени r ≈ 5 и портит предсказанный ресурс.
+    """
+
+    @pytest.mark.verification
+    def test_lumped_capacity_keeps_the_field_within_bounds(
+        self, space: FemSpace, material: MaterialParams
+    ) -> None:
+        operator = ThermalOperator.build(space, material, lumped=True)
+        stepper = operator.stepper(np.ones((NX, NY)), 2.0e-4, side_dofs(space))
+
+        field = np.zeros((NX, NY))
+        for _ in range(40):
+            field = stepper.advance(field, 1.0)
+            assert field.min() >= -1e-12, f"провал ниже начального: {field.min()}"
+            assert field.max() <= 1.0 + 1e-12
+
+    def test_consistent_capacity_undershoots(
+        self, space: FemSpace, material: MaterialParams
+    ) -> None:
+        # Причина, по которой диагонализация стоит умолчанием. Согласованная матрица
+        # связывает соседние узлы, и на резком фронте появляется провал ниже минимума.
+        # Тест закрепляет находку: возврат lumped=False должен быть осознанным.
+        #
+        # Шаг взят мелким намеренно: немонотонность проявляется при Δt < h²/(6α),
+        # то есть ниже 1.6e-4 для этой сетки. Это контринтуитивно — обычно мелкий шаг
+        # считают безопаснее, — и потому особенно легко пропустить.
+        operator = ThermalOperator.build(space, material, lumped=False)
+        stepper = operator.stepper(np.ones((NX, NY)), 5.0e-5, side_dofs(space))
+
+        field = np.zeros((NX, NY))
+        for _ in range(40):
+            field = stepper.advance(field, 1.0)
+
+        assert field.min() < -1e-6, f"провала не возникло: {field.min()}"
+
+
 class TestConservation:
     def test_insulated_domain_keeps_its_heat(
         self, operator: ThermalOperator, space: FemSpace
