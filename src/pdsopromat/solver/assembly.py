@@ -1,23 +1,23 @@
-"""Кешированная пересборка матрицы жёсткости.
+"""Кешированная пересборка матриц, линейных по множителю.
 
 Замер на этапе верификации показал, что сборка съедает больше времени, чем само
 решение системы: на сетке 129×129 это 0.67 с против 1.4 с на решение. В прокате
 до отказа механика вызывается сотни раз, и при таком раскладе генерация датасета
 вылезала за бюджет недели 4 примерно втридцатеро.
 
-Приём опирается на то, что слабая форма **линейна по множителю жёсткости**. Если
-множитель постоянен на элементе, то::
+Приём опирается на то, что слабая форма **линейна по множителю**. Если множитель
+постоянен на элементе, то::
 
-    K(m) = Σ_e m_e · K_e
+    A(m) = Σ_e m_e · A_e
 
-где элементные матрицы ``K_e`` от ``m`` не зависят вовсе. Значит их достаточно
+где элементные матрицы ``A_e`` от ``m`` не зависят вовсе. Значит их достаточно
 проинтегрировать один раз, а каждая последующая пересборка — это поэлементное
 умножение и раскладка по структуре разреженной матрицы, то есть O(nnz) без
 единого обращения к квадратуре. Измеренное ускорение — 40–74×.
 
-Структура разреженной матрицы тоже постоянна, поэтому позиции вкладов в массив
-данных CSR вычисляются один раз. Пересборка сводится к ``bincount`` по готовому
-отображению.
+Механизм общий для двух мест, где он нужен: жёсткость, деградирующая полем
+повреждаемости, и теплопроводность, деградирующая тем же полем. Поэтому он
+вынесен в :class:`MultiplierCache`, а конкретные операторы — тонкие обёртки.
 
 Множитель берётся постоянным на элементе, а не интерполированным по узлам, как
 в эталонной сборке :func:`~pdsopromat.solver.elasticity.assemble_stiffness`.
@@ -28,7 +28,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Self
 
 import numpy as np
 import numpy.typing as npt
@@ -44,11 +44,11 @@ IntArray = npt.NDArray[np.int64]
 
 
 @dataclass(frozen=True)
-class StiffnessAssembler:
-    """Пересобирает ``K(m)`` без интегрирования.
+class MultiplierCache:
+    """Пересобирает ``A(m)`` без интегрирования.
 
-    Строится один раз на сетку и материал, дальше переиспользуется на всём прогоне.
-    Стоимость построения (порядка секунды) окупается уже на втором вызове.
+    Строится один раз на сетку, форму и материал, дальше переиспользуется на всём
+    прогоне. Стоимость построения (порядка секунды) окупается уже на втором вызове.
     """
 
     space: FemSpace
@@ -59,17 +59,21 @@ class StiffnessAssembler:
     _entries_per_element: int
 
     @classmethod
-    def build(cls, space: FemSpace, material: MaterialParams) -> StiffnessAssembler:
-        lam, mu = plane_stress_moduli(material)
-        unit_multiplier = space.scalar.interpolate(np.ones(space.scalar.N))
+    def for_form(
+        cls, space: FemSpace, form: Any, basis: Any, **form_kwargs: Any
+    ) -> Self:
+        """Кеш для формы, принимающей множитель под именем ``multiplier``.
 
-        coo: Any = stiffness_form.coo_data(
-            space.vector, multiplier=unit_multiplier, lam=lam, mu=mu
-        )
+        ``basis`` — то пространство, на котором форма собирается: векторное для
+        упругости, скалярное для теплопроводности.
+        """
+        unit_multiplier = space.scalar.interpolate(np.ones(space.scalar.N))
+        coo: Any = form.coo_data(basis, multiplier=unit_multiplier, **form_kwargs)
+
         data = np.asarray(coo.data, dtype=np.float64)
         rows, cols = (np.asarray(index, dtype=np.int64) for index in coo.indices)
 
-        size = space.vector.N
+        size = basis.N
         pattern = sp.coo_matrix((data, (rows, cols)), shape=(size, size)).tocsr()
         pattern.sort_indices()
 
@@ -98,7 +102,7 @@ class StiffnessAssembler:
         return averaged
 
     def assemble(self, multiplier: FloatArray) -> sp.csr_matrix:
-        """K(m) для узлового поля множителя формы ``(nx, ny)``."""
+        """A(m) для узлового поля множителя формы ``(nx, ny)``."""
         expected = (self.space.grid.nx, self.space.grid.ny)
         if multiplier.shape != expected:
             msg = f"ожидался множитель формы {expected}, получено {multiplier.shape}"
@@ -116,3 +120,12 @@ class StiffnessAssembler:
             self._mapping, weights=scaled, minlength=self._pattern.data.size
         )
         return matrix
+
+
+class StiffnessAssembler(MultiplierCache):
+    """Кеш матрицы жёсткости плоской задачи упругости."""
+
+    @classmethod
+    def build(cls, space: FemSpace, material: MaterialParams) -> Self:
+        lam, mu = plane_stress_moduli(material)
+        return cls.for_form(space, stiffness_form, space.vector, lam=lam, mu=mu)
