@@ -93,18 +93,37 @@ class TestMaterialMask:
 
     def test_sharp_mask_is_strictly_binary(self, grid: StructuredGrid) -> None:
         mask = material_mask(
-            grid, Geometry(width=0.1, height=0.1, hole_radius=0.02), smoothing=0.0
+            grid, Geometry(width=0.1, height=0.1, hole_radius=0.02), interface_fraction=0.0
         )
 
         assert np.all((mask == 0.0) | (mask == 1.0))
 
     def test_smoothing_produces_a_transition_band(self, grid: StructuredGrid) -> None:
         mask = material_mask(
-            grid, Geometry(width=0.1, height=0.1, hole_radius=0.02), smoothing=1.5
+            grid, Geometry(width=0.1, height=0.1, hole_radius=0.02), interface_fraction=0.3
         )
 
         interior = mask[(mask > 0.01) & (mask < 0.99)]
         assert interior.size > 0, "сглаживание не создало переходной полосы"
+
+    def test_transition_width_is_physical_not_mesh_bound(self) -> None:
+        # Ширина полосы обязана задаваться геометрией, а не шагом сетки. Иначе
+        # измельчение меняет саму задачу, и непрерывного предела, к которому
+        # сходиться, не существует — сеточная сходимость становится недостижима.
+        geometry = Geometry(width=0.1, height=0.1, hole_radius=0.02)
+        fraction = 0.25
+        expected = fraction * geometry.hole_radius
+
+        widths = []
+        for n in (65, 129, 257):
+            fine = StructuredGrid(nx=n, ny=n, width=0.1, height=0.1)
+            mask = material_mask(fine, geometry, interface_fraction=fraction)
+            # Профиль вдоль оси x от центра: считаем протяжённость полосы перехода.
+            profile = mask[n // 2 :, n // 2]
+            band = np.count_nonzero((profile > 0.01) & (profile < 0.99))
+            widths.append(band * (0.1 / (n - 1)))
+
+        assert all(abs(w - expected) / expected < 0.15 for w in widths), widths
 
     def test_mask_stays_within_unit_interval(self, grid: StructuredGrid) -> None:
         mask = material_mask(grid, Geometry(width=0.1, height=0.1, hole_radius=0.03))
@@ -123,7 +142,7 @@ class TestMaterialMask:
         errors = []
         for n in (65, 129, 257):
             fine = StructuredGrid(nx=n, ny=n, width=0.1, height=0.1)
-            void_fraction = 1.0 - material_mask(fine, geometry, smoothing=1.0).mean()
+            void_fraction = 1.0 - material_mask(fine, geometry, interface_fraction=0.1).mean()
             errors.append(abs(void_fraction - expected) / expected)
 
         assert errors[-1] < 0.01, f"грубая маска на 257 узлах: {errors}"

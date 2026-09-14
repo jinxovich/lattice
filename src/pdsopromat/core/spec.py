@@ -176,11 +176,12 @@ class MeshSpec(_Frozen):
     resolution: Annotated[int, Field(ge=16, le=1024)] = Field(
         default=128, description="Узлов по стороне"
     )
-    mask_smoothing: Annotated[float, Field(ge=0.0, le=4.0)] = Field(
-        default=1.0,
+    interface_fraction: Annotated[float, Field(ge=0.0, le=0.5)] = Field(
+        default=0.1,
         description=(
-            "Ширина сглаживания границы маски в ячейках. Ноль даёт чистую ступеньку "
-            "и завышенную концентрацию напряжений на углах пикселей"
+            "Ширина переходной полосы маски в долях радиуса отверстия — в физических "
+            "единицах, не в ячейках. Привязка к ячейке делала бы геометрию зависящей "
+            "от сетки, и сеточная сходимость стала бы недостижима в принципе"
         ),
     )
 
