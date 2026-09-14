@@ -7,7 +7,9 @@ name = "pdsopromat"
 version = "0.1.0"
 description = "Суррогатное моделирование связанной термо-механо-деградационной задачи"
 readme = "README.md"
-requires-python = ">=3.11"
+# 3.12 — штатная версия Ubuntu 24.04, целевой платформы расчёта и деплоя.
+# Стабы numpy 2.5 используют оператор `type`, который ниже 3.12 не разбирается.
+requires-python = ">=3.12"
 license = { text = "MIT" }
 
 dependencies = [
@@ -53,7 +55,7 @@ packages = ["src/pdsopromat"]
 # ---------------------------------------------------------------------------
 [tool.ruff]
 line-length = 100
-target-version = "py311"
+target-version = "py312"
 src = ["src", "tests"]
 
 [tool.ruff.lint]
@@ -75,15 +77,16 @@ ignore = [
     "E741",
     "PLR0913",  # много аргументов: у физических функций это нормально
     "PLR2004",  # магические числа в тестах-сравнениях
+    # Документация и комментарии ведутся по-русски. Правила «неоднозначных юникод-символов»
+    # ловят каждую кириллическую «а» и «с» как опечатку в латинице — для этого проекта
+    # это сплошной шум, перекрывающий настоящие находки.
+    "RUF001",
+    "RUF002",
+    "RUF003",
 ]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["PLR2004", "S101"]
-
-[tool.ruff.lint.flake8-tidy-imports.banned-api]
-# Контракт: слой API не имеет права импортировать физику или солвер.
-# Полная проверка — в tests/test_import_boundaries.py, здесь только подсказка в редакторе.
-"pdsopromat.solver".msg = "api/ не должен импортировать solver/ — см. контракт C-импорт в плане"
 
 [tool.ruff.lint.isort]
 known-first-party = ["pdsopromat"]
@@ -92,7 +95,7 @@ known-first-party = ["pdsopromat"]
 # Mypy
 # ---------------------------------------------------------------------------
 [tool.mypy]
-python_version = "3.11"
+python_version = "3.12"
 files = ["src", "tests"]
 strict = true
 warn_unreachable = true
